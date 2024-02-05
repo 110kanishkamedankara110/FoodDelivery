@@ -4,13 +4,10 @@
  */
 package com.phoenix.foodDelivery.gui;
 
-import com.phoenix.foodDelivery.dto.Order;
 import com.phoenix.foodDelivery.entities.Food;
 import com.phoenix.foodDelivery.entities.FoodOrder;
 import com.phoenix.foodDelivery.util.*;
 
-import java.util.EventListener;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -20,30 +17,18 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DefaultCaret;
 
 import org.hibernate.Session;
-import org.hibernate.SessionEventListener;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.spi.SessionFactoryBuilderImplementor;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.event.service.spi.EventListenerRegistry;
-import org.hibernate.event.spi.EventType;
-import org.hibernate.event.spi.PostInsertEvent;
-import org.hibernate.event.spi.PostInsertEventListener;
-import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.resource.transaction.spi.TransactionCoordinator;
+import org.hibernate.query.Query;
 
 /**
  * @author BLACKBOX
  */
-public class ManageOrder extends javax.swing.JFrame {
-
+public class ToAccept extends javax.swing.JFrame {
     private Mediator mediator;
-
     /**
-     * Creates new form ManageOrder
+     * Creates new form ToAccept
      */
-    public ManageOrder() {
+    public ToAccept() {
 
         setUndecorated(true);
         initComponents();
@@ -51,53 +36,9 @@ public class ManageOrder extends javax.swing.JFrame {
         this.setup();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-
     public void setMediator(Mediator mediator) {
         this.mediator = mediator;
     }
-
-    private void setup() {
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
-
-        DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
-        dtm.setRowCount(0);
-        List<FoodOrder> orders = session.createQuery("SELECT o FROM FoodOrder o", FoodOrder.class).getResultList();
-        if (orders.size() > 0) {
-            for (FoodOrder order : orders) {
-                String orderId = order.getId();
-                String status = order.getStatus().toString();
-                String foodItems = String.valueOf(order.getFoodList().size());
-                double price = 0;
-                for (Food food : order.getFoodList()) {
-                    price = food.getUnitPrice() * food.getQuantity();
-                }
-
-                Vector v = new Vector();
-
-                v.add(orderId);
-                v.add(status);
-                v.add(foodItems);
-                v.add(String.valueOf(price));
-
-                dtm.addRow(v);
-            }
-        }
-
-    }
-
-    public void showMessage(String message) {
-        jTextArea1.setText(jTextArea1.getText() + "\n" + message);
-        DefaultCaret caret = (DefaultCaret) jTextArea1.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-    }
-
-    @Override
-    public void setVisible(boolean b) {
-        this.setup();
-        super.setVisible(b);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -113,9 +54,9 @@ public class ManageOrder extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,7 +82,7 @@ public class ManageOrder extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Manage Order");
+        jLabel3.setText("To Accept");
 
         jTable2.setBackground(new java.awt.Color(102, 102, 102));
         jTable2.setForeground(new java.awt.Color(204, 204, 204));
@@ -170,35 +111,31 @@ public class ManageOrder extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTable2);
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextArea2.setEditable(false);
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane3.setViewportView(jTextArea2);
 
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Status :");
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Status :");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(178, 178, 178)
-                        .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
-                .addContainerGap())
+                .addGap(221, 221, 221)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 552, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,11 +143,11 @@ public class ManageOrder extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
-                .addComponent(jLabel1)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -232,7 +169,7 @@ public class ManageOrder extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -251,7 +188,7 @@ public class ManageOrder extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        mediator.closeManageOrder();
+        mediator.closeTOAccept();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
@@ -267,7 +204,7 @@ public class ManageOrder extends javax.swing.JFrame {
                 orderQue.setOrderQueListener(new OrderQueListener() {
                     @Override
                     public void listen(String id, List list) {
-//        System.out.println("changed........................");
+                        //        System.out.println("changed........................");
                         setup();
                     }
                 });
@@ -279,22 +216,63 @@ public class ManageOrder extends javax.swing.JFrame {
             }
         }
 
-
     }//GEN-LAST:event_jTable2MouseClicked
+    public void showMessage(String message){
+        jTextArea2.setText(jTextArea2.getText()+"\n"+message); 
+        DefaultCaret caret = (DefaultCaret) jTextArea2.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+    }
+    private void setup() {
+        SessionFactory sf = HibernateUtil.getSessionFactory();
+        Session session = sf.openSession();
 
+        DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+        dtm.setRowCount(0);
+        Query<FoodOrder> query = session.createQuery("SELECT o FROM FoodOrder o WHERE o.status=:stat", FoodOrder.class);
+
+        query.setParameter("stat", Status.WaitingTillAccepting.toString());
+        List<FoodOrder> orders = query.getResultList();
+        if (orders.size() > 0) {
+            for (FoodOrder order : orders) {
+                String orderId = order.getId();
+                String status = order.getStatus().toString();
+                String foodItems = String.valueOf(order.getFoodList().size());
+                double price = 0;
+                for (Food food : order.getFoodList()) {
+                    price = food.getUnitPrice() * food.getQuantity();
+                }
+
+                Vector v = new Vector();
+
+                v.add(orderId);
+                v.add(status);
+                v.add(foodItems);
+                v.add(String.valueOf(price));
+
+                dtm.addRow(v);
+            }
+        }
+
+    }
+ @Override
+    public void setVisible(boolean b) {
+        this.setup();
+        super.setVisible(b);
+    }
     /**
      * @param args the command line arguments
      */
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     // End of variables declaration//GEN-END:variables
 }

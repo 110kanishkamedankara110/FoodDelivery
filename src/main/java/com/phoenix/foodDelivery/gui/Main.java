@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 public class Main extends javax.swing.JFrame {
 
     private Order fOrder;
+    public static Mediator mediator;
 
     /**
      * Creates new form Main
@@ -36,12 +38,35 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         FrameSetup.setup(this);
         this.setup();
+        
+        
+        mediator.messageAll("---------Welcome-------");
+        mediator.messageAll("Application Started.......");
+        mediator.messageAll("Waiting For orders.........");
+        
+        
         loadQue();
+        
+       
+        
     }
 
     private void setup() {
         this.setOpacity(0.99f);
 
+        ManageOrder manageOrder=new ManageOrder();
+        OrderFood orderFood=new OrderFood();
+        Orders orders=new Orders();
+        ToAccept toAccept=new ToAccept();
+
+        mediator = Mediator.getInstance(this,manageOrder,orderFood,orders,toAccept);
+
+        manageOrder.setMediator(mediator);
+        orderFood.setMediator(mediator);
+        orders.setMediator(mediator);
+        toAccept.setMediator(mediator);
+        
+        
         this.jButton1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -54,7 +79,7 @@ public class Main extends javax.swing.JFrame {
                 e.getComponent().setForeground(Color.black);
             }
         });
-        change(new MainPannel());
+        change(new MainPannel(mediator));
         this.revalidate();
     }
 
@@ -73,7 +98,7 @@ public class Main extends javax.swing.JFrame {
                     foodList.put(f, food.getQuantity());
                 }
 
-                Order fOrder=new Order();
+                Order fOrder = new Order();
                 fOrder.setOrderStatus(order.getStatus());
                 fOrder.setFoodOrders(foodList);
                 fOrder.setOrderId(order.getId());
@@ -95,6 +120,8 @@ public class Main extends javax.swing.JFrame {
 
 
     }
+    
+    
 
     private void change(JPanel jp) {
         jPanel2.removeAll();
@@ -173,7 +200,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.dispose();
+        mediator.closeApp();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -184,7 +211,8 @@ public class Main extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 com.formdev.flatlaf.FlatIntelliJLaf.setup();
-                new Main().setVisible(true);
+                Main m=new Main();
+                m.mediator.runApp();
             }
         });
     }

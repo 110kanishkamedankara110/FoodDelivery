@@ -2,12 +2,16 @@ package com.phoenix.foodDelivery.util;
 
 
 import com.phoenix.foodDelivery.dto.Order;
+import com.phoenix.foodDelivery.gui.Main;
 
 public class OrderManager {
-    private final OrderHandler ACCEPTING = new AcceptingHandler();
-    private final OrderHandler COOKING = new CookingHandler();
-    private final OrderHandler PACKING = new PackingHandler();
-    private final OrderHandler HANDOVER = new HandoverHandler();
+    
+    Mediator m=Main.mediator;
+    
+    private final OrderHandler ACCEPTING = new AcceptingHandler(m);
+    private final OrderHandler COOKING = new CookingHandler(m);
+    private final OrderHandler PACKING = new PackingHandler(m);
+    private final OrderHandler HANDOVER = new HandoverHandler(m);
 
     public OrderManager() {
         ACCEPTING.setNextOrderHandler(COOKING);

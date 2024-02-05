@@ -15,10 +15,14 @@ import java.util.Map;
 
 public class AcceptingHandler extends OrderHandler {
 
+    public AcceptingHandler(Mediator mediator) {
+        super(mediator);
+    }
+    
     @Override
     public synchronized void handle(Order o) {
 
-        System.out.println("order " + o.getOrderId() + " Waiting till accepting");
+        mediator.messageAll("order " + o.getOrderId() + " Waiting till accepting");
 
         OrderQue orderQue = OrderQue.getInstance();
 
@@ -114,7 +118,7 @@ public class AcceptingHandler extends OrderHandler {
             }
 
 
-            System.out.println("order " + foodOrder.getId() + " Accepted");
+            mediator.messageAll("order " + foodOrder.getId() + " Accepted");
 
 
 

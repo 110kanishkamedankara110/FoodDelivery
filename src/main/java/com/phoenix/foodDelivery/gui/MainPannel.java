@@ -13,6 +13,7 @@ import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
+import org.jfree.util.WaitingImageObserver;
 
 /**
  *
@@ -23,7 +24,9 @@ public class MainPannel extends javax.swing.JPanel {
     /**
      * Creates new form MainPannel
      */
-    public MainPannel() {
+    private Mediator mediator;
+    public MainPannel(Mediator mediator) {
+        this.mediator=mediator;
         initComponents();
     }
     
@@ -288,7 +291,7 @@ public class MainPannel extends javax.swing.JPanel {
     }//GEN-LAST:event_jPanel12FocusGained
 
     private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
-
+        mediator.openTOAccept();
      }//GEN-LAST:event_jPanel12MouseClicked
 
     private void jPanel12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseEntered
@@ -302,22 +305,9 @@ public class MainPannel extends javax.swing.JPanel {
     }//GEN-LAST:event_jPanel12MouseExited
 
     private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
-//        Food f = FoodCreater.createFood("pizza", 200,"extra cheese,less souse,no meat");
-//        FoodInterpreter fi = new FoodInterpreter(f);
-//
-//        f = fi.getFood();
-//
-//        HashMap<Food, Integer> foodList = new HashMap();
-//        foodList.put(f, 2);
-//
-//        com.phoenix.foodDelivery.dto.Order o = OrderCreater.createOrder(foodList);
-//
-//        String orderId = o.getOrderId();
-//
-//        OrderManager om = new OrderManager();
-//        om.placeOrder(o);
 
-        new OrderFood().setVisible(true);
+
+        mediator.openOrderFood();
         
 
     }//GEN-LAST:event_jPanel6MouseClicked
@@ -343,7 +333,7 @@ public class MainPannel extends javax.swing.JPanel {
     }//GEN-LAST:event_jPanel10FocusGained
 
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
-        new Orders().setVisible(true);
+mediator.openOrders();
     }//GEN-LAST:event_jPanel10MouseClicked
 
     private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered
@@ -363,7 +353,7 @@ public class MainPannel extends javax.swing.JPanel {
     }//GEN-LAST:event_jPanel11FocusGained
     
     private void jPanel11MouseClicked(java.awt.event.MouseEvent evt) {
-        new ManageOrder().setVisible(true);
+mediator.openManageOrder();
     }
 
     private void jPanel11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseEntered

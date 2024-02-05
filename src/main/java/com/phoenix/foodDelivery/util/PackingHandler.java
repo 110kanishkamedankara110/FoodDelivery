@@ -12,12 +12,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PackingHandler extends OrderHandler{
+
+    public PackingHandler(Mediator mediator) {
+        super(mediator);
+    }
+    
+    
     @Override
     public synchronized void handle(Order o) {
 
         HashMap<String,List> orderQue = OrderQue.getInstance();
 
-        System.out.println("order "+o.getOrderId()+" Packing Started");
+        mediator.messageAll("order "+o.getOrderId()+" Packing Started");
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
 
@@ -52,7 +58,7 @@ public class PackingHandler extends OrderHandler{
 
         try {
             wait();
-            System.out.println("order "+ foodOrder.getId()+" Packing complete");
+            mediator.messageAll("order "+ foodOrder.getId()+" Packing complete");
             if(getNextOrderHandler()!=null) {
                 getNextOrderHandler().handle(o);
             }

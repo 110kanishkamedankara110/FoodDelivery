@@ -12,12 +12,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class HandoverHandler extends OrderHandler{
+
+    public HandoverHandler(Mediator mediator) {
+        super(mediator);
+    }
+    
+    
     @Override
     public synchronized void handle(Order o) {
 
         HashMap<String,List> orderQue = OrderQue.getInstance();
 
-        System.out.println("order "+o.getOrderId()+" Handover Started");
+        mediator.messageAll("order "+o.getOrderId()+" Handover Started");
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
 
@@ -95,7 +101,7 @@ public class HandoverHandler extends OrderHandler{
             }
 
 
-            System.out.println("order "+ foodOrder.getId()+" Handover complete");
+            mediator.messageAll("order "+ foodOrder.getId()+" Handover complete");
 
 
 
